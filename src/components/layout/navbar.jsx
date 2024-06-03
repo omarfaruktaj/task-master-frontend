@@ -19,7 +19,7 @@ export default function Navbar() {
       cancelButtonText: "No, cancel!",
     });
     if (result.isConfirmed) {
-      await auth?.logout();
+      await auth.logout();
       toast.success("Successfull logout.");
     }
   };
@@ -29,7 +29,13 @@ export default function Navbar() {
       path: "/",
       label: "Home",
     },
+    {
+      path: "dashboard",
+      label: "Dashboard",
+      isHidden: !auth.user,
+    },
   ];
+  console.log(!auth.user);
 
   const profilePicture = auth.user?.photoURL;
 
@@ -58,8 +64,8 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             {routes.map(
-              ({ path, label, isPrivate }) =>
-                !isPrivate && (
+              ({ path, label, isHidden }) =>
+                !isHidden && (
                   <li key={path}>
                     <NavLink
                       className={({ isActive, isPending }) =>
@@ -81,8 +87,8 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           {routes.map(
-            ({ path, label, isPrivate }) =>
-              !isPrivate && (
+            ({ path, label, isHidden }) =>
+              !isHidden && (
                 <li key={path}>
                   <NavLink
                     className={({ isActive, isPending }) =>

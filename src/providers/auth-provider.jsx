@@ -74,6 +74,7 @@ function AuthProvider({ children }) {
   const logout = async () => {
     await signOut(auth);
     setUser(null);
+    localStorage.removeItem("token");
   };
 
   const googleLogin = async () => {
