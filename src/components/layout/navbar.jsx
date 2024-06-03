@@ -1,15 +1,37 @@
 import { Link, NavLink } from "react-router-dom";
-
+import useAuth from "../../hooks/use-auth";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { FaUserCircle } from "react-icons/fa";
+const MySwal = withReactContent(Swal);
 
 export default function Navbar() {
-  
+  const auth = useAuth();
+
+  const handleLogout = async () => {
+    const result = await MySwal.fire({
+      title: "Are you sure?",
+      text: "Do you want to logout out?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, logout!",
+      cancelButtonText: "No, cancel!",
+    });
+    if (result.isConfirmed) {
+      await auth?.logout();
+      toast.success("Successfull logout.");
+    }
+  };
+
   const routes = [
     {
       path: "/",
       label: "Home",
     },
-    
   ];
+
+  const profilePicture = auth.user?.photoURL;
 
   return (
     <div className="navbar bg-base-100">
@@ -76,7 +98,26 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
-        <button className="btn ">login</button>
+        {auth?.user ? (
+          <div className="flex items-center justify-center gap-4">
+            {profilePicture ? (
+              <img
+                className="w-24 h-24 rounded-full "
+                src={profilePicture}
+                alt={"User profile image"}
+              />
+            ) : (
+              <FaUserCircle className="h-8 w-8 " />
+            )}
+            <button onClick={handleLogout} className="btn">
+              Logout
+            </button>
+          </div>
+        ) : (
+          <Link to="/login" className="btn">
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );

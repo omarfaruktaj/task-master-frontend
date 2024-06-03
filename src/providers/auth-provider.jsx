@@ -11,6 +11,7 @@ import {
 import { createContext, useEffect, useState } from "react";
 
 import auth from "../firebase/firebase.config";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -23,14 +24,51 @@ function AuthProvider({ children }) {
   const facebookProvider = new FacebookAuthProvider();
 
   const createUser = async (name, email, password) => {
-    await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     await updateProfile(auth.currentUser, {
       displayName: name,
     });
+
+    const user = userCredential.user;
+    const data = await axios.post(
+      "https://task-master-vert-omega.vercel.app/api/users",
+      {
+        name: user.displayName,
+        email: user.email,
+      }
+    );
+
+    const token = data?.data?.data?.token;
+
+    localStorage.setItem("token", token);
   };
 
   const login = async (email, password) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const user = userCredential.user;
+
+    // const data = await axios.post(
+    //   "https://task-master-vert-omega.vercel.app/api/users/login",
+    //   {
+
+    //     email: user.email,
+    //   }
+    // );
+
+    // const token = data?.data?.data?.token;
+
+    // if (token) {
+    //   localStorage.setItem("token", token);
+    // }
   };
 
   const logout = async () => {
@@ -39,11 +77,40 @@ function AuthProvider({ children }) {
   };
 
   const googleLogin = async () => {
-    await signInWithPopup(auth, googleProvider);
+    const userCredential = await signInWithPopup(auth, googleProvider);
+
+    const user = userCredential.user;
+    const data = await axios.post(
+      "https://task-master-vert-omega.vercel.app/api/users",
+      {
+        name: user.displayName,
+        email: user.email,
+      }
+    );
+
+    const token = data?.data?.data?.token;
+
+    if (token) {
+      localStorage.setItem("token", token);
+    }
   };
 
   const facebookLogin = async () => {
-    await signInWithPopup(auth, facebookProvider);
+    const userCredential = await signInWithPopup(auth, facebookProvider);
+    const user = userCredential.user;
+    const data = await axios.post(
+      "https://task-master-vert-omega.vercel.app/api/users",
+      {
+        name: user.displayName,
+        email: user.email,
+      }
+    );
+
+    const token = data?.data?.data?.token;
+
+    if (token) {
+      localStorage.setItem("token", token);
+    }
   };
 
   useEffect(() => {
