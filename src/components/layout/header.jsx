@@ -35,7 +35,7 @@ export default function Header() {
 
         setUser(data.data?.data?.user);
       } catch (error) {
-        toast.error(error.message);
+        // toast.error(error.message);
       }
     };
     loadUserData();

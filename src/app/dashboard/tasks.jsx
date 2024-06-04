@@ -86,70 +86,76 @@ export default function Tasks() {
         </div>
         <div className="w-full h-0.5 bg-gray-700 my-4"></div>
       </div>
-      <div className="flex justify-start gap-5 mb-4">
-        <div>
-          <p className="my-1 font-bold">Search</p>
-          <input
-            type="text"
-            placeholder="Search by title"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="input input-bordered"
-          />
-        </div>
-        <div>
-          <p className="my-1 font-bold">Filter</p>
+      {tasks.length > 0 && (
+        <div className="flex justify-start gap-5 mb-4">
+          <div>
+            <p className="my-1 font-bold">Search</p>
+            <input
+              type="text"
+              placeholder="Search by title"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input input-bordered"
+            />
+          </div>
+          <div>
+            <p className="my-1 font-bold">Filter</p>
 
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="input input-bordered"
-          >
-            <option value="">All</option>
-            {statusOptions.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="input input-bordered"
+            >
+              <option value="">All</option>
+              {statusOptions.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
+      )}
       <div className="overflow-x-auto">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th className="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* row 1 */}
-            {tasks.map(({ _id, title, description, status }) => (
-              <tr key={title} className="  rounded-full mb-4">
-                <td>{title}</td>
-                <td>{description}</td>
-                <td className="">{status}</td>
-                <td>
-                  <div className="flex items-center justify-center gap-2">
-                    <Link to={`update/${_id}`} className="btn btn-primary">
-                      Update
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(_id)}
-                      className="btn btn-error"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
+        {tasks.length === 0 ? (
+          <p>No tasks Found. Please add a new task</p>
+        ) : (
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th className="text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-          {/* foot */}
-        </table>
+            </thead>
+            <tbody>
+              {/* row 1 */}
+              {tasks.map(({ _id, title, description, status }) => (
+                <tr key={title} className="  rounded-full mb-4">
+                  <td>{title}</td>
+                  <td>{description}</td>
+                  <td className="">{status}</td>
+                  <td>
+                    <div className="flex items-center justify-center gap-2">
+                      <Link to={`update/${_id}`} className="btn btn-primary">
+                        Update
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(_id)}
+                        className="btn btn-error"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            {/* foot */}
+          </table>
+        )}
       </div>
     </div>
   );

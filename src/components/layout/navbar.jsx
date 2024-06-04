@@ -18,7 +18,7 @@ export default function Navbar() {
   const email = auth.user?.email;
 
   useEffect(() => {
-    if (email) {
+    if (email && !auth.loading) {
       const token = localStorage.getItem("token");
 
       const loadUserData = async () => {
@@ -34,12 +34,12 @@ export default function Navbar() {
 
           setUser(data.data?.data?.user);
         } catch (error) {
-          toast.error(error.message);
+          // toast.error(error.message);
         }
       };
       loadUserData();
     }
-  }, [email, navigate, user]);
+  }, [auth.loading, email, navigate, user]);
 
   const handleLogout = async () => {
     const result = await MySwal.fire({

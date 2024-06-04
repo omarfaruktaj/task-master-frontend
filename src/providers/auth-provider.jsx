@@ -34,6 +34,7 @@ function AuthProvider({ children }) {
     });
 
     const user = userCredential.user;
+    setLoading(true);
     const data = await axios.post(
       "https://task-master-vert-omega.vercel.app/api/users",
       {
@@ -45,6 +46,7 @@ function AuthProvider({ children }) {
     const token = data?.data?.data?.token;
 
     localStorage.setItem("token", token);
+    setLoading(false);
   };
 
   const login = async (email, password) => {
@@ -55,20 +57,18 @@ function AuthProvider({ children }) {
     );
 
     const user = userCredential.user;
+    setLoading(true);
+    const data = await axios.post(
+      "https://task-master-vert-omega.vercel.app/api/users/login",
+      {
+        email: user.email,
+      }
+    );
 
-    // const data = await axios.post(
-    //   "https://task-master-vert-omega.vercel.app/api/users/login",
-    //   {
+    const token = data?.data?.data?.token;
 
-    //     email: user.email,
-    //   }
-    // );
-
-    // const token = data?.data?.data?.token;
-
-    // if (token) {
-    //   localStorage.setItem("token", token);
-    // }
+    localStorage.setItem("token", token);
+    setLoading(false);
   };
 
   const logout = async () => {
@@ -82,10 +82,11 @@ function AuthProvider({ children }) {
 
     const user = userCredential.user;
     const data = await axios.post(
-      "https://task-master-vert-omega.vercel.app/api/users",
+      "https://task-master-vert-omega.vercel.app/api/users/social",
       {
         name: user.displayName,
         email: user.email,
+        profile_image: user.photoURL,
       }
     );
 
@@ -100,10 +101,11 @@ function AuthProvider({ children }) {
     const userCredential = await signInWithPopup(auth, facebookProvider);
     const user = userCredential.user;
     const data = await axios.post(
-      "https://task-master-vert-omega.vercel.app/api/users",
+      "https://task-master-vert-omega.vercel.app/api/users/social",
       {
         name: user.displayName,
         email: user.email,
+        profile_image: user.photoURL,
       }
     );
 
