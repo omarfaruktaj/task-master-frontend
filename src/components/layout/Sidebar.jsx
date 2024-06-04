@@ -11,12 +11,12 @@ export default function Sidebar() {
       label: "Dashborad",
     },
     {
-      path: "profile",
-      label: "Profile",
-    },
-    {
       path: "tasks",
       label: "Tasks",
+    },
+    {
+      path: "profile",
+      label: "Profile",
     },
   ];
 

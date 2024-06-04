@@ -7,10 +7,8 @@ export default function TaskForm({ taskId, onSubmit }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    status: "To DO",
+    status: "To Do",
   });
-
-  console.log(taskId);
 
   const statusOptions = ["To Do", "In Progress", "Done"];
 
