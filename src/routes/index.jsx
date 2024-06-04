@@ -13,6 +13,9 @@ import ChangePassword from "../app/dashboard/change-password";
 import CreateProduct from "../app/dashboard/create-task";
 import Tasks from "../app/dashboard/tasks";
 import UpdateTask from "../app/dashboard/update-task";
+import Blogs from "../app/root/blog";
+import AboutUsPage from "../app/root/aboutus";
+import Pricing from "../app/root/pricing";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +25,18 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Home />,
+      },
+      {
+        path: "/blogs",
+        element: <Blogs />,
+      },
+      {
+        path: "/aboutus",
+        element: <AboutUsPage />,
+      },
+      {
+        path: "/pricing",
+        element: <Pricing />,
       },
       {
         path: "",

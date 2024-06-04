@@ -1,13 +1,45 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/use-auth";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { FaUserCircle } from "react-icons/fa";
+import axios from "axios";
+import { useEffect, useState } from "react";
 const MySwal = withReactContent(Swal);
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
+
   const auth = useAuth();
+
+  const navigate = useNavigate();
+
+  const email = auth.user?.email;
+
+  useEffect(() => {
+    if (email) {
+      const token = localStorage.getItem("token");
+
+      const loadUserData = async () => {
+        try {
+          const data = await axios.get(
+            `https://task-master-vert-omega.vercel.app/api/users/${email}`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          );
+
+          setUser(data.data?.data?.user);
+        } catch (error) {
+          toast.error(error.message);
+        }
+      };
+      loadUserData();
+    }
+  }, [email, navigate, user]);
 
   const handleLogout = async () => {
     const result = await MySwal.fire({
@@ -24,10 +56,24 @@ export default function Navbar() {
     }
   };
 
+  const profilePicture = user?.profile_image;
+
   const routes = [
     {
       path: "/",
       label: "Home",
+    },
+    {
+      path: "/blogs",
+      label: "Blogs",
+    },
+    {
+      path: "/aboutus",
+      label: "About Us",
+    },
+    {
+      path: "/pricing",
+      label: "Pricing",
     },
     {
       path: "dashboard",
@@ -35,9 +81,6 @@ export default function Navbar() {
       isHidden: !auth.user,
     },
   ];
-  console.log(!auth.user);
-
-  const profilePicture = auth.user?.photoURL;
 
   return (
     <div className="navbar bg-base-100">
@@ -106,15 +149,20 @@ export default function Navbar() {
       <div className="navbar-end">
         {auth?.user ? (
           <div className="flex items-center justify-center gap-4">
-            {profilePicture ? (
-              <img
-                className="w-24 h-24 rounded-full "
-                src={profilePicture}
-                alt={"User profile image"}
-              />
-            ) : (
-              <FaUserCircle className="h-8 w-8 " />
-            )}
+            <div
+              className="cursor-pointer"
+              onClick={() => navigate("/dashboard/profile")}
+            >
+              {profilePicture ? (
+                <img
+                  className="w-14 h-14 rounded-full mx-auto"
+                  src={profilePicture}
+                  alt={"User profile image"}
+                />
+              ) : (
+                <FaUserCircle className="h-8 w-8 mx-auto" />
+              )}
+            </div>
             <button onClick={handleLogout} className="btn">
               Logout
             </button>

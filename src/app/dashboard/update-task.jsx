@@ -23,7 +23,7 @@ export default function UpdateTask() {
       if (result.isConfirmed) {
         const token = localStorage.getItem("token");
         await axios.patch(
-          `http://localhost:5000/api/tasks/${id}`,
+          `https://task-master-vert-omega.vercel.app/api/tasks/${id}`,
           {
             ...data,
           },

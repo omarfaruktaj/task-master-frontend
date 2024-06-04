@@ -25,7 +25,7 @@ export default function CreateTask() {
 
       if (result.isConfirmed) {
         await axios.post(
-          "http://localhost:5000/api/tasks",
+          "https://task-master-vert-omega.vercel.app/api/tasks",
           {
             ...data,
           },

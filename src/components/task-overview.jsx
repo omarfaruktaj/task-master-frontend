@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Loading from "./loading";
 
 export default function TasksOverview() {
+  const [loading, setLoading] = useState(false);
   const [taskCounts, setTaskCounts] = useState({
     totalTasks: 0,
     todoTasks: 0,
@@ -10,11 +12,12 @@ export default function TasksOverview() {
   });
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:5000/api/tasks/count",
+          "https://task-master-vert-omega.vercel.app/api/tasks/count",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -23,13 +26,17 @@ export default function TasksOverview() {
         );
 
         setTaskCounts(response.data.data);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching task counts:", error);
+        console.error(error.message);
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="">

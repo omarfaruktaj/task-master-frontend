@@ -1,10 +1,10 @@
-import { FaUserCircle } from "react-icons/fa";
+import { FaArrowLeft, FaUserCircle } from "react-icons/fa";
 import useAuth from "../../hooks/use-auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { FaXmark } from "react-icons/fa6";
+import Loading from "../../components/loading";
 
 export default function UpdateProfile() {
   const [user, setUser] = useState({});
@@ -48,7 +48,7 @@ export default function UpdateProfile() {
       setIsLoading(true);
       const token = localStorage.getItem("token");
       const { data } = await axios.patch(
-        `http://localhost:5000/api/users/${email}`,
+        `https://task-master-vert-omega.vercel.app/api/users/${email}`,
         { user },
         {
           headers: {
@@ -99,19 +99,22 @@ export default function UpdateProfile() {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading />;
 
   return (
     <div>
       <div className="m-8 h-screen">
+        <button className="btn btn-ghost my-4" onClick={() => navigate(-1)}>
+          <div className="flex items-center justify-center gap-2">
+            <FaArrowLeft className="h-5 w-5" />
+            <p className="text-xl"> Back</p>
+          </div>
+        </button>
         <div className="max-w-md rounded overflow-hidden shadow-lg p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl pb-2 text-gray-200 font-bold">
               Update Profile
             </h2>
-            <div onClick={() => navigate(-1)} className="p-3 cursor-pointer">
-              <FaXmark className="h-5 w-5" />
-            </div>
           </div>
           <div className="h-0.5 w-full bg-base-200 my-2"></div>
           <div className="mt-4">

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Loading from "./loading";
 
 // eslint-disable-next-line react/prop-types
 export default function TaskForm({ taskId, onSubmit }) {
@@ -17,7 +18,7 @@ export default function TaskForm({ taskId, onSubmit }) {
     if (taskId) {
       setIsLoding(true);
       axios
-        .get(`http://localhost:5000/api/tasks/${taskId}`, {
+        .get(`https://task-master-vert-omega.vercel.app/api/tasks/${taskId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +46,7 @@ export default function TaskForm({ taskId, onSubmit }) {
     onSubmit(formData);
   };
 
-  if (isLoading) return <p>Loadding...</p>;
+  if (isLoading) return <Loading />;
   return (
     <div>
       <h1 className="p-4 text-3xl font-bold">

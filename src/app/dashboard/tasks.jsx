@@ -17,20 +17,24 @@ export default function Tasks() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const getTasks = async () => {
-      let url = "http://localhost:5000/api/tasks";
-      if (searchTerm) {
-        url += `?search=${searchTerm}`;
-      }
-      if (statusFilter) {
-        url += `${searchTerm ? "&" : "?"}status=${statusFilter}`;
-      }
-      const data = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        let url = "https://task-master-vert-omega.vercel.app/api/tasks";
+        if (searchTerm) {
+          url += `?search=${searchTerm}`;
+        }
+        if (statusFilter) {
+          url += `${searchTerm ? "&" : "?"}status=${statusFilter}`;
+        }
+        const data = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      setTasks(data.data.data.tasks);
+        setTasks(data.data.data.tasks);
+      } catch (error) {
+        toast.error("Something weant wrong.");
+      }
     };
     getTasks();
   }, [searchTerm, statusFilter]);
@@ -47,11 +51,14 @@ export default function Tasks() {
         cancelButtonText: "No, cancel!",
       });
       if (result.isConfirmed) {
-        await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.delete(
+          `https://task-master-vert-omega.vercel.app/api/tasks/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setTasks(tasks.filter((task) => task._id !== id));
 
         toast.success("Task deleted.");

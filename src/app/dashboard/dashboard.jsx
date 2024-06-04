@@ -1,4 +1,4 @@
-import TasksOverview from "../../components/task-count-cart";
+import TasksOverview from "../../components/task-overview";
 
 export default function Dashboard() {
   return (

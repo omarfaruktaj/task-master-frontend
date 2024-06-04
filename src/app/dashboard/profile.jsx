@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/loading";
 
 export default function Profile() {
   const [user, setUser] = useState();
@@ -39,9 +40,7 @@ export default function Profile() {
     loadUserData();
   }, [email, navigate, user]);
 
-  console.log(user);
-
-  if (isLoading) return <p>Loadding...</p>;
+  if (isLoading) return <Loading />;
 
   return (
     <div className=" m-8 h-screen ">
