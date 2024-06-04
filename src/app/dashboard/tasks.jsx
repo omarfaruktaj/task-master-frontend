@@ -127,7 +127,7 @@ export default function Tasks() {
                 <td className="">{status}</td>
                 <td>
                   <div className="flex items-center justify-center gap-2">
-                    <Link to={`edit/${_id}`} className="btn btn-primary">
+                    <Link to={`update/${_id}`} className="btn btn-primary">
                       Update
                     </Link>
                     <button

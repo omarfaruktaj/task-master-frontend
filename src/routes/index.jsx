@@ -12,6 +12,7 @@ import UpdateProfile from "../app/dashboard/update-profile";
 import ChangePassword from "../app/dashboard/change-password";
 import CreateProduct from "../app/dashboard/create-task";
 import Tasks from "../app/dashboard/tasks";
+import UpdateTask from "../app/dashboard/update-task";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "tasks/create",
         element: <CreateProduct />,
+      },
+      {
+        path: "tasks/update/:id",
+        element: <UpdateTask />,
       },
     ],
   },

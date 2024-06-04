@@ -3,30 +3,37 @@ import { useEffect, useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 export default function TaskForm({ taskId, onSubmit }) {
+  const [isLoading, setIsLoding] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     status: "To DO",
   });
 
+  console.log(taskId);
+
   const statusOptions = ["To Do", "In Progress", "Done"];
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (taskId) {
+      setIsLoding(true);
       axios
         .get(`http://localhost:5000/api/tasks/${taskId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
-        .then((response) =>
+        .then((response) => {
+          console.log(response);
           setFormData({
-            title: response.data.title,
-            description: response.data.description,
-            status: response.data.status,
-          })
-        );
+            title: response.data.data.task.title,
+            description: response.data.data.task.description,
+            status: response.data.data.task.status,
+          });
+          setIsLoding(false);
+        });
+      setIsLoding(false);
     }
   }, [taskId]);
 
@@ -40,6 +47,7 @@ export default function TaskForm({ taskId, onSubmit }) {
     onSubmit(formData);
   };
 
+  if (isLoading) return <p>Loadding...</p>;
   return (
     <div>
       <h1 className="p-4 text-3xl font-bold">
