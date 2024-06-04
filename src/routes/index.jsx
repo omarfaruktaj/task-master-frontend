@@ -8,6 +8,8 @@ import DashboardLayout from "../app/dashboard/dashboard-layout";
 import Dashboard from "../app/dashboard/dashboard";
 import PrivateRoute from "./private/private-route";
 import Profile from "../app/dashboard/profile";
+import UpdateProfile from "../app/dashboard/update-profile";
+import ChangePassword from "../app/dashboard/change-password";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "profile/edit",
+        element: <UpdateProfile />,
+      },
+      {
+        path: "profile/change-password",
+        element: <ChangePassword />,
       },
     ],
   },

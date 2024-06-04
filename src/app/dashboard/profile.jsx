@@ -1,4 +1,4 @@
-import { FaEdit, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaUserEdit } from "react-icons/fa";
 import useAuth from "../../hooks/use-auth";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -37,11 +37,9 @@ export default function Profile() {
       }
     };
     loadUserData();
-
-    // if (!user) {
-    //   navigate("/login");
-    // }
   }, [email, navigate, user]);
+
+  console.log(user);
 
   if (isLoading) return <p>Loadding...</p>;
 
@@ -52,14 +50,16 @@ export default function Profile() {
           <h2 className=" text-3xl  pb-2 text-gray-200 font-bold">
             My Profile
           </h2>
-          <FaEdit className="h-4 w-4" />
+          <div onClick={() => navigate("edit")} className="p-3 cursor-pointer">
+            <FaUserEdit className="h-6 w-6" />
+          </div>
         </div>
         <div className="h-0.5 w-full bg-base-200 my-2"></div>
         <div className="mt-4">
-          {user?.profilePicture ? (
+          {user?.profile_image ? (
             <img
               className="w-24 h-24 rounded-full mx-auto"
-              src={user?.profilePicture}
+              src={user?.profile_image}
               alt={user?.name || "User profile image"}
             />
           ) : (
@@ -70,7 +70,14 @@ export default function Profile() {
               {user?.name ? user?.name : "Unname User"}
             </h2>
             <p className="text-gray-600">Email: {user?.email}</p>
-            <p className="text-gray-600">{}</p>
+            <p className="text-gray-600">
+              <button
+                onClick={() => navigate("change-password")}
+                className="btn btn-link"
+              >
+                Change password
+              </button>
+            </p>
           </div>
         </div>
       </div>
