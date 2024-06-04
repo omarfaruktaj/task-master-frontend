@@ -10,6 +10,7 @@ import PrivateRoute from "./private/private-route";
 import Profile from "../app/dashboard/profile";
 import UpdateProfile from "../app/dashboard/update-profile";
 import ChangePassword from "../app/dashboard/change-password";
+import CreateProduct from "../app/dashboard/create-task";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "profile/change-password",
         element: <ChangePassword />,
+      },
+      {
+        path: "tasks/create",
+        element: <CreateProduct />,
       },
     ],
   },
